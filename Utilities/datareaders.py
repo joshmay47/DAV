@@ -209,10 +209,10 @@ class IbtracsReader:
         if len(found_tcs) == 1:
             return found_tcs[0]
         return found_tcs
-   
+    
     def _get_index_from_sid(self, sid):
         if self.sid_dict is None:
-            self.sid_dict = {self._strdata_from_index(index, "sid"): index
+            self.sid_dict = {self._strdata_from_index(index, "sid"): index 
                              for index in range(self.MAX_INDEX)}
         if sid in self.sid_dict:
             return self.sid_dict[sid]
@@ -232,7 +232,7 @@ class IbtracsReader:
             return self._get_index_from_sid(tc_identifier)
         if is_name_and_year:
             return self._get_index_from_name(*tc_identifier)
-           
+            
         msg = f"'tc_identifier' must be an integer (if index in ibtracs dataset) \
 , string (if SID) or name and year pair (str and int, respectively). Got \
 {tc_identifier!r}."
@@ -361,22 +361,11 @@ class Dimension:
         self.x0 = float(self.values[0])
         self.dx = float(self.values[1]) - self.x0
         self.mx = float(self.values[-1])
-        self.min = min(self.x0, self.mx) - abs(self.dx)/2
-        self.max = max(self.x0, self.mx) + abs(self.dx)/2
         self.rounding = rounding
 
     def to_grid(self, coordinate):
-        if not (self.min <= coordinate < self.max):
-            raise ValueError(f"Dimension {self.attribute!r} got queried "
-                             f"{coordinate} when valid range is {self.min} to {self.max}.")
         raw_idx = (coordinate - self.x0)/self.dx
-        if self.rounding:
-            rounded_value = round(raw_idx)
-            rounded_too_high = rounded_value == len(self)
-            if rounded_too_high:
-                return rounded_value-1
-            return rounded_value
-        return raw_idx
+        return round(raw_idx) if self.rounding else raw_idx
 
     def __len__(self):
         return len(self.values)
@@ -390,8 +379,8 @@ class Reader:
             msg = "Error reading files. Check all files are standard .nc4 or .nc format."
             raise ValueError(msg) from e
 
-        self.lats  = Dimension(self.data, lat_attribute, True)
-        self.lons  = Dimension(self.data, lon_attribute, True)
+        self.lats  = Dimension(self.data, lat_attribute,  True)
+        self.lons  = Dimension(self.data, lon_attribute,  True)
         self.times = Dimension(self.data, time_attribute, False)
 
         aspect_ratio = abs(self.lons.dx/self.lats.dx)
@@ -413,7 +402,8 @@ class Reader:
 
     def data_from_index(self, attribute, location, index):
         """ Retrieves a chunk of an attribute from a location, at an index (time) """
-        assert index < self.MAX_INDEX, f"Index {index} out of range ({self.MAX_INDEX})"
+        if index >= self.MAX_INDEX:
+            raise IndexError(f"Index {index} out of range ({self.MAX_INDEX})")
         self.chunk.relocate(location)
         left_slice, right_slice = self.chunk.calculate_slicings(index)
         if self.chunk.over_west or self.chunk.over_east:
@@ -437,6 +427,10 @@ class Reader:
 
 class WindReader(Reader):
     def __init__(self, wind_files, size: float):
+        """
+        image_files = list of files, or string containing radical. Each file should be sequential.
+        size = radius (in degrees) from the provided coordinates that will be captured
+        """
         super().__init__(wind_files, size, 'u', 'longitude', 'latitude', 'time')
 
     def read(self, iso_time: str, coordinate: tuple, direction: str):
@@ -449,7 +443,7 @@ class WindReader(Reader):
         if index%1 != 0:
             raise IndexError(f"Got bad index: {index}")
         return self.data_from_index(direction, location, int(index))[::-1]
-
+    
     def read_tc_index(self, tc_dict, direction, index):
         coordinate = (tc_dict['lat'][index], tc_dict['lon'][index])
         return self.read(tc_dict['iso_time'][index], coordinate, direction)
@@ -471,15 +465,44 @@ class MergirReader(Reader):
         about the index if the time is out of range of the files.
 
         """
-        index = round(self.iso_to_index(iso_time))
+        index = self.iso_to_index(iso_time)
         location = self.coordinate_to_location(coordinate)
         return self.data_from_index('Tb', location, round(index))
 
+class DavReader(Reader):
+    def __init__(self, dav_files, size: float):
+        """
+        dav_files = list of files, or string containing radical. Each file should be sequential.
+        size = radius (in degrees) from the provided coordinates that will be captured
+        """
+        super().__init__(dav_files, size, 'DAV', 'lon', 'lat', 'time')
+    
+    def read(self, iso_time: str, coordinate: tuple):
+        """
+        iso_time: time in the format of 'YYYY-MM-DD HH:mm:ss'
+        coordinate: location in the format of (lat, lon)
+
+        Returns the chunk centered over coordinate. Can raise an AssertionError
+        about the index if the time is out of range of the files.
+
+        """
+        index = self.iso_to_index(iso_time)
+        location = self.coordinate_to_location(coordinate)
+        return self.data_from_index('DAV', location, round(index))
+
 class SstReader(Reader):
     def __init__(self, sst_files):
+        """
+        sst_files = list of files, or string containing radical. Each file should be sequential.
+        """
         super().__init__(sst_files, -1, 'sst', 'longitude', 'latitude', 'valid_time')
     
     def read(self, iso_time: str, coordinate: tuple):
-        index = round(self.iso_to_index(iso_time))
+        index = self.iso_to_index(iso_time)
         location = self.coordinate_to_location(coordinate)
-        return float(self.data['sst'][index, *location])
+        if index%1 == 0.5:
+            return 0.5*(float(self.data['sst'][int(index),   *location])+
+                        float(self.data['sst'][int(index)+1, *location]))
+        if index%1 != 0:
+            raise IndexError(f"Got bad index: {index}")
+        return float(self.data['sst'][int(index), *location])
