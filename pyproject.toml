@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tc-dav"
+version = "0.1.0"
+description = "Tropical cyclone intensity and structure models based on Deviation Angle Variance (DAV)"
+readme = "README.md"
+requires-python = ">=3.9"
+
+authors = [
+    { name = "Joshua May", email = "josh.w.may@gmail.com" }
+]
+
+dependencies = [
+    "numpy",
+    "scipy",
+    "tqdm",
+    "numba",
+    "xarray",
+    "netCDF4",
+    "dask"
+]
+
+keywords = [
+    "tropical cyclone",
+    "meteorology",
+    "remote sensing",
+    "wind speed",
+    "DAV"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Atmospheric Science"
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/tc-dav"
+Repository = "https://github.com/yourusername/tc-dav"
+
+[tool.setuptools.packages.find]
+where = ["src"]
