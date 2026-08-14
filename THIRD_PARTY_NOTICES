@@ -1,0 +1,41 @@
+THIRD-PARTY NOTICES
+===================
+
+This repository includes third-party datasets used as test data.
+
+1. MERGIR
+----------
+
+Some of the test data included in this repository is derived from the
+MERGIR dataset.
+
+Licence:
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+https://creativecommons.org/licenses/by/4.0/
+
+MERGIR data is used as test data for the tc-dav package. The applicable
+licence requires appropriate attribution when the data is redistributed.
+
+2. IBTrACS
+----------
+
+The example IBTrACS data included in this repository is provided by the
+NOAA National Centers for Environmental Information (NCEI).
+
+IBTrACS (International Best Track Archive for Climate Stewardship) is
+produced by NOAA/NCEI. As a work of the U.S. federal government, the
+data is public domain and is not subject to copyright in the United
+States.
+
+IBTrACS documentation:
+https://www.ncei.noaa.gov/products/international-best-track-archive
+
+The IBTrACS data is included in this repository solely as example/test
+data for the tc-dav package.
+
+3. tc-dav
+---------
+
+The source code of tc-dav is distributed under the licence specified
+in the LICENSE file in this repository.
