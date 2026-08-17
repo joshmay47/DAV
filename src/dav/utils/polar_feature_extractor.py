@@ -132,11 +132,11 @@ def get_dav_profile(dav_images: np.ndarray,
     """
     if not isinstance(dav_images, np.ndarray):
         raise TypeError("Expected dav_images to be of type np.ndarray, got "
-                        "{type(dav_images)}.")
+                        f"{type(dav_images)}.")
 
     if dav_images.ndim != 3:
         raise ValueError("Unexpected dimensionality of DAV array, should be "
-                         "3D, got {dav_images.ndim}D.")
+                         f"3D, got {dav_images.ndim}D.")
     views = [to_polar(image, radius_range=(0, 75)) for image in dav_images]
     profile = np.array([down_angle(image, 90).T for image in views])
     return profile

@@ -46,3 +46,6 @@ Repository = "https://github.com/joshmay47/DAV"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"dav.wind_radii" = ["models/*.json"]
