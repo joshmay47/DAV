@@ -2,9 +2,11 @@
 This module provides a model for fitting DAV (Deviation Angle Variance) values
 to Tropical Cyclone (TC) wind speed with a sigmoid shape.
 
-Originally concieved in: M. F. Pineros, E. A. Ritchie and J. S. Tyo,
-"Objective Measures of Tropical Cyclone Structure and Intensity Change From
-Remotely Sensed Infrared Image Data" doi: 10.1109/TGRS.2008.2000819.
+Originally concieved in:
+    Pineros, MF, Ritchie, EA & Tyo, JS 2008, 'Objective measures of tropical
+    cyclone structure and intensity change from remotely sensed infrared image
+    data', IEEE Transactions on Geoscience and Remote Sensing, vol. 46, no. 11,
+    4685943, pp. 3574-3580. https://doi.org/10.1109/TGRS.2008.2000819
 
 
 Example:

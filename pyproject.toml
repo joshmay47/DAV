@@ -20,14 +20,17 @@ dependencies = [
     "numba",
     "xarray",
     "netCDF4",
-    "dask"
-]
+    "dask",
+    "pandas",
+    "psutil",
+    "scikit-learn"]
 
 keywords = [
     "tropical cyclone",
     "meteorology",
     "remote sensing",
     "wind speed",
+    "wind radii",
     "DAV"
 ]
 
@@ -38,8 +41,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/tc-dav"
-Repository = "https://github.com/yourusername/tc-dav"
+Homepage = "https://github.com/joshmay47/DAV"
+Repository = "https://github.com/joshmay47/DAV"
 
 [tool.setuptools.packages.find]
 where = ["src"]
