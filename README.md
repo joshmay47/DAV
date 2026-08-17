@@ -62,8 +62,8 @@ from dav.utils import IbtracsReader, MergirReader
 ibtracs_fn = "C:/Path/to/Ibtracs.nc"  # https://doi.org/10.25921/82ty-9e16
 mergir_dir = "C:/Path/to/MERGIR"      # https://doi.org/10.5067/P4HZB9N27EKU
 
-tc\_name = "Chris"
-tc\_year = 2024
+tc_name = "Chris"
+tc_year = 2024
 
 print("Setting up IBTrACS")
 ibtracs = IbtracsReader(ibtracs_fn)
@@ -104,10 +104,38 @@ from dav.intensity import model
 
 dav_radius_km = 300  # radius of DAV calculation in km
 image_resolution = 8  # km per pixel
+starting_basin = tc['basin'][0]
 
 cdav_values = centre_dav(images, radius_pixels) # images retrieved from earlier example
-helene_predicted_intensity = model.predict(cdav_values, tc['basin'][0]) # Starting basin retrieved from earlier example
+predicted_intensity = model.predict(cdav_values, starting_basin)
 
 # This will produce a NumPy array of predicted wind intensity in knots:
 # dav_maps.shape -> (time)
+```
+
+## Example predicting TC wind radii
+```python
+from dav.utils import get_dav_profile, get_tc_age
+from dav.wind_radii import model as wind_radii_model
+
+profile = get_dav_profile(dav_maps, 75)
+tc_age = get_tc_age(tc['usa_wind'], samples_per_hour=1/3) # For three-hourly samples.
+
+# sst can be retrieved from elsewhere, during experiments we used ERA5 data
+data = {"profile": profile,
+        "age": tc_age,
+        "sst": np.array([29.73, 29.73, 29.26, 29.11, np.nan]),
+        "wind": tc['usa_wind']}
+
+tc_basin = tc['basin'][0]
+quadrant = "symmetric"
+radius = "r34
+
+predictions = wind_radii_model.predict(data,
+                                       basin=tc_basin,
+                                       quadrant=quadrant,
+                                       radius=radius)
+
+# This will produce 34-kt wind radii estimates symmetrically around the TC.
+# predictions.shape -> (time,)
 ```
