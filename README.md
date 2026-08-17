@@ -4,7 +4,7 @@ Tropical cyclone intensity and structure models based on Deviation Angle Varianc
 
 This package provides tools for analysing tropical cyclone wind structure using geostationary brightness temperature images.
 
----
+\---
 
 ## Installation
 
@@ -62,8 +62,8 @@ from dav.utils import IbtracsReader, MergirReader
 ibtracs_fn = "C:/Path/to/Ibtracs.nc"  # https://doi.org/10.25921/82ty-9e16
 mergir_dir = "C:/Path/to/MERGIR"      # https://doi.org/10.5067/P4HZB9N27EKU
 
-tc_name = "Helene"
-tc_year = 2024
+tc\_name = "Chris"
+tc\_year = 2024
 
 print("Setting up IBTrACS")
 ibtracs = IbtracsReader(ibtracs_fn)
