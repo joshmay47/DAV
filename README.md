@@ -68,7 +68,8 @@ tc\_year = 2024
 print("Setting up IBTrACS")
 ibtracs = IbtracsReader(ibtracs_fn)
 
-print("Collecting images (Helene is a long-lived TC, so this may take a while.)")
+# The following approach at collecting the files is not recommended in
+# practice. This will take a long time to execute for large datasets.
 mergir = MergirReader(f"{mergir_dir}/*.nc4", size=10)
 
 print("Reading images")
