@@ -1,0 +1,168 @@
+{
+    "basin": "WP",
+    "quadrant": "sw",
+    "radius": "r34",
+    "time_created": "2026-08-17T00:28:13.530308+00:00",
+    "metrics": {
+        "rmse_train": 87.72920613603716,
+        "rmse_test": 82.18373298298363,
+        "mape_train": 45.46600081484017,
+        "mape_test": 55.56027851407605,
+        "mae_train": 67.39493498920271,
+        "mae_test": 67.1263518458862
+    },
+    "variables": [
+        "dav_radius",
+        "age",
+        "sst",
+        "wind"
+    ],
+    "variable_metadata": {
+        "dav_radius": {
+            "description": "Furthest distance from TC center that stays below the dav_radius_threshold",
+            "units": "km"
+        },
+        "age": {
+            "description": "Storm age since last reaching 34 knots wind speed",
+            "units": "hours"
+        },
+        "sst": {
+            "description": "Sea surface temperature at TC center",
+            "units": "degC"
+        },
+        "wind": {
+            "description": "Maximum sustained wind speed at current TC time",
+            "units": "knots"
+        }
+    },
+    "dav_radius_threshold": 2700.0,
+    "intercept": 203.07090124551812,
+    "terms": [
+        {
+            "coef": 0.006050258101920947,
+            "powers": [
+                1,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "coef": 0.20039642504815233,
+            "powers": [
+                0,
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "coef": -1.8009881690336662,
+            "powers": [
+                0,
+                0,
+                1,
+                0
+            ]
+        },
+        {
+            "coef": 0.3709910892474442,
+            "powers": [
+                0,
+                0,
+                0,
+                1
+            ]
+        },
+        {
+            "coef": -0.00025149429870571435,
+            "powers": [
+                2,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "coef": 0.001387978632913554,
+            "powers": [
+                1,
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "coef": 0.0025464733571611445,
+            "powers": [
+                1,
+                0,
+                1,
+                0
+            ]
+        },
+        {
+            "coef": 0.002430948573949527,
+            "powers": [
+                1,
+                0,
+                0,
+                1
+            ]
+        },
+        {
+            "coef": -0.0015865281970648022,
+            "powers": [
+                0,
+                2,
+                0,
+                0
+            ]
+        },
+        {
+            "coef": 0.004217507585957028,
+            "powers": [
+                0,
+                1,
+                1,
+                0
+            ]
+        },
+        {
+            "coef": 6.903080567596385e-05,
+            "powers": [
+                0,
+                1,
+                0,
+                1
+            ]
+        },
+        {
+            "coef": -0.08647084517118435,
+            "powers": [
+                0,
+                0,
+                2,
+                0
+            ]
+        },
+        {
+            "coef": 0.005676395400194056,
+            "powers": [
+                0,
+                0,
+                1,
+                1
+            ]
+        },
+        {
+            "coef": -0.004092931132090505,
+            "powers": [
+                0,
+                0,
+                0,
+                2
+            ]
+        }
+    ]
+}

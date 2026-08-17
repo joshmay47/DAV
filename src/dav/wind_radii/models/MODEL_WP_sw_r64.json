@@ -1,0 +1,78 @@
+{
+    "basin": "WP",
+    "quadrant": "sw",
+    "radius": "r64",
+    "time_created": "2026-08-17T00:29:16.686389+00:00",
+    "metrics": {
+        "rmse_train": 28.91569093981357,
+        "rmse_test": 33.27724657013833,
+        "mape_train": 42.930810115803844,
+        "mape_test": 34.02137953504097,
+        "mae_train": 20.349344190253465,
+        "mae_test": 24.734481392443918
+    },
+    "variables": [
+        "dav_radius",
+        "age",
+        "sst",
+        "wind"
+    ],
+    "variable_metadata": {
+        "dav_radius": {
+            "description": "Furthest distance from TC center that stays below the dav_radius_threshold",
+            "units": "km"
+        },
+        "age": {
+            "description": "Storm age since last reaching 34 knots wind speed",
+            "units": "hours"
+        },
+        "sst": {
+            "description": "Sea surface temperature at TC center",
+            "units": "degC"
+        },
+        "wind": {
+            "description": "Maximum sustained wind speed at current TC time",
+            "units": "knots"
+        }
+    },
+    "dav_radius_threshold": 2000.0,
+    "intercept": 164.71234314193717,
+    "terms": [
+        {
+            "coef": 0.08948518133991923,
+            "powers": [
+                1,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "coef": 0.0788814986998214,
+            "powers": [
+                0,
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "coef": -5.014424841816397,
+            "powers": [
+                0,
+                0,
+                1,
+                0
+            ]
+        },
+        {
+            "coef": 0.2183124077827184,
+            "powers": [
+                0,
+                0,
+                0,
+                1
+            ]
+        }
+    ]
+}
