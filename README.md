@@ -4,7 +4,7 @@ Tropical cyclone intensity and structure models based on Deviation Angle Varianc
 
 This package provides tools for analysing tropical cyclone wind structure using geostationary brightness temperature images.
 
-\---
+---
 
 ## Installation
 
