@@ -2,7 +2,8 @@
     "basin": "EP",
     "quadrant": "sw",
     "radius": "r50",
-    "time_created": "2026-08-16T23:48:56.319806+00:00",
+    "profile_resolution": 8,
+    "time_created": "2026-08-18T06:09:39.902219+00:00",
     "metrics": {
         "rmse_train": 22.712095673575995,
         "rmse_test": 21.31041656805164,

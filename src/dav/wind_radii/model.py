@@ -69,9 +69,7 @@ from .preprocessing import quadrants_to_symmetrical
 BASINS = {"EP", "NA", "SI", "NI", "SP", "WP"}
 QUADRANTS = ("symmetric", "ne", "se", "sw", "nw")
 QUADRANT_INDEX = {"ne": 0, "se": 1, "sw": 2, "nw": 3}
-RADII = {"r34": "usa_r34", "r50": "usa_r50", "r64": "usa_r64"}
-
-PROFILE_RESOLUTION = 8  # In km per pixel
+RADII = {"r34": 34, "r50": 50, "r64": 64}
 
 
 @dataclass(frozen=True)
@@ -114,7 +112,8 @@ def _furthest_contiguous_under_threshold(array, threshold):
 
 def get_dav_radii_from_profile(profile: np.ndarray,
                                quadrant: str,
-                               threshold: float) -> np.ndarray:
+                               threshold: float,
+                               profile_resolution: float) -> np.ndarray:
     """
     Convert the DAV profile to dav_radii in a quadrant using a threshold.
 
@@ -141,22 +140,25 @@ def get_dav_radii_from_profile(profile: np.ndarray,
     np.ndarray
         dav_radii, the distance from the center of the TC the DAV value stayed
         below the threshold in the given quadrant in KM. Ensure the
-        PROFILE_RESOLUTION global matches the profile resolution in km/pixel
+        profile_resolution matches the profile resolution in km/pixel
 
     """
     if profile.ndim != 3:
-        raise ValueError(f"Invalid shape for profile, should be 3D, got {profile.ndim}D.")
+        raise ValueError("Invalid shape for profile, should be 3D, "
+                         f"got {profile.ndim}D.")
     if profile.shape[1] != 4:
-        raise ValueError(f"Invalid number of quadrants in profile, should be 4, got {profile.shape[1]}.")
+        raise ValueError("Invalid number of quadrants in profile, should be "
+                         f"4, got {profile.shape[1]}.")
     if quadrant not in QUADRANTS:
-        raise ValueError(f"Invalid quadrant {quadrant!r}. Expected one of {QUADRANTS}.")
+        raise ValueError(f"Invalid quadrant {quadrant!r}. Expected one of "
+                         f"{QUADRANTS}.")
 
     if quadrant == "symmetric":
         quadrant_profile = quadrants_to_symmetrical(profile)
     else:
         quadrant_profile = profile[:, QUADRANT_INDEX[quadrant]]
 
-    return PROFILE_RESOLUTION * _furthest_contiguous_under_threshold(quadrant_profile,
+    return profile_resolution * _furthest_contiguous_under_threshold(quadrant_profile,
                                                                      threshold)
 
 
@@ -171,7 +173,8 @@ def _check_data_inputs(model_json: dict,
 
     dav_radius = get_dav_radii_from_profile(data["profile"],
                                             model_json["quadrant"],
-                                            model_json["dav_radius_threshold"])
+                                            model_json["dav_radius_threshold"],
+                                            model_json["profile_resolution"])
 
     feature_data = {**data,
                     "dav_radius": dav_radius}
@@ -249,7 +252,11 @@ def predict_from_json(model_json: dict, data: dict) -> np.array:
     return y
 
 
-def predict(data: dict, basin: str, quadrant: str, radius: str):
+def predict(data: dict,
+            basin: str,
+            quadrant: str,
+            radius: str,
+            set_low_zero: bool = True) -> np.ndarray:
     """
     Predict TC wind radii based on default model and data.
 
@@ -277,6 +284,9 @@ def predict(data: dict, basin: str, quadrant: str, radius: str):
     radius : str
         The wind value to predict the radius for. Should be one of
         ("r34", "r50", "r64").
+    set_low_zero : bool
+        If true, sets values of prediction to zero when the wind value is less
+        than the desired intensity. Default is True.
 
     Raises
     ------
@@ -308,4 +318,9 @@ def predict(data: dict, basin: str, quadrant: str, radius: str):
     with model_file.open("r", encoding="utf-8") as f:
         model_json = json.load(f)
 
-    return predict_from_json(model_json, data)
+    prediction = predict_from_json(model_json, data)
+
+    if set_low_zero:
+        return np.where(data['wind'] < RADII[radius], 0., prediction)
+
+    return prediction

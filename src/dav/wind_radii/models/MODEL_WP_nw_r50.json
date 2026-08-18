@@ -2,7 +2,8 @@
     "basin": "WP",
     "quadrant": "nw",
     "radius": "r50",
-    "time_created": "2026-08-17T00:30:26.025883+00:00",
+    "profile_resolution": 8,
+    "time_created": "2026-08-18T06:59:27.106552+00:00",
     "metrics": {
         "rmse_train": 56.83357992691219,
         "rmse_test": 58.297272776354646,

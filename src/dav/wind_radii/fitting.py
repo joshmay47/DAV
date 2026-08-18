@@ -703,7 +703,8 @@ def fit_with_search(save_dir: str,
     for basin, quadrant, radius in tqdm_product(BASINS, QUADRANTS, RADII):
         fit_details = {"basin": basin,
                        "quadrant": quadrant,
-                       "radius": radius}
+                       "radius": radius,
+                       "profile_resolution": PROFILE_RESOLUTION}
         results = fit(data[basin][quadrant][radius],
                       poly_degrees=poly_degrees,
                       alphas=alphas,

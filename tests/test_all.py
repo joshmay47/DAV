@@ -128,18 +128,18 @@ def test_wind_radii_estimation(example_tc_data, dav_maps):
     """
     _, tc = example_tc_data
 
-    model_json = Path(__file__).parent / "MODEL_NA_symmetric_r34.json"
-    with open(model_json, 'r') as file:
-        model_json = json.load(file)
-
     profile = get_dav_profile(dav_maps, 75)
+
     # sst can be retrieved from elsewhere, during experiments we used ERA5 data
     data = {"profile": profile,
             "age": get_tc_age(tc['usa_wind'], samples_per_hour=1/3),
             "sst": np.array([29.73, 29.73, 29.26, 29.11, np.nan]),
             "wind": tc['usa_wind']}
 
-    predictions = wind_radii_model.predict_from_json(model_json, data)
+    predictions = wind_radii_model.predict(data,
+                                           basin="NA",
+                                           quadrant="symmetric",
+                                           radius="r34")
 
     assert len(predictions) == 5
     assert np.all(np.isfinite(predictions[:4]))

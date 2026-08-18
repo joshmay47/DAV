@@ -2,7 +2,8 @@
     "basin": "NI",
     "quadrant": "se",
     "radius": "r50",
-    "time_created": "2026-08-17T00:02:40.935165+00:00",
+    "profile_resolution": 8,
+    "time_created": "2026-08-18T06:25:48.350904+00:00",
     "metrics": {
         "rmse_train": 23.028358075934893,
         "rmse_test": 54.46324959343188,
