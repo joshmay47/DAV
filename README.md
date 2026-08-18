@@ -100,14 +100,16 @@ dav_maps = dav(images, radius_pixels)
 ## Example predicting TC intensity
 ```python
 from dav.generate import centre_dav
-from dav.intensity import model
+from dav.intensity import model as intensity_model
 
 dav_radius_km = 300  # radius of DAV calculation in km
 image_resolution = 8  # km per pixel
+
+radius_pixels = dav_radius_km / image_resolution
 starting_basin = tc['basin'][0]
 
 cdav_values = centre_dav(images, radius_pixels) # images retrieved from earlier example
-predicted_intensity = model.predict(cdav_values, starting_basin)
+predicted_intensity = intensity_model.predict(cdav_values, starting_basin)
 
 # This will produce a NumPy array of predicted wind intensity in knots:
 # dav_maps.shape -> (time)
@@ -118,7 +120,7 @@ predicted_intensity = model.predict(cdav_values, starting_basin)
 from dav.utils import get_dav_profile, get_tc_age
 from dav.wind_radii import model as wind_radii_model
 
-profile = get_dav_profile(dav_maps, 75)
+profile = get_dav_profile(dav_maps, 75)  # dav_maps from earlier example
 tc_age = get_tc_age(tc['usa_wind'], samples_per_hour=1/3) # For three-hourly samples.
 
 # sst can be retrieved from elsewhere, during experiments we used ERA5 data
@@ -129,7 +131,7 @@ data = {"profile": profile,
 
 tc_basin = tc['basin'][0]
 quadrant = "symmetric"
-radius = "r34
+radius = "r34"
 
 predictions = wind_radii_model.predict(data,
                                        basin=tc_basin,
