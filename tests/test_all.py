@@ -139,7 +139,8 @@ def test_wind_radii_estimation(example_tc_data, dav_maps):
     predictions = wind_radii_model.predict(data,
                                            basin="NA",
                                            quadrant="symmetric",
-                                           radius="r34")
+                                           radius="r34",
+                                           set_low_zero=False)
 
     assert len(predictions) == 5
     assert np.all(np.isfinite(predictions[:4]))
