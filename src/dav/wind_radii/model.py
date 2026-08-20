@@ -140,7 +140,7 @@ def get_dav_radii_from_profile(profile: DAVProfile,
     np.ndarray
         dav_radii, the distance from the center of the TC the DAV value stayed
         below the threshold in the given quadrant in KM. Ensure the
-        profile_resolution matches the profile resolution in km/pixel
+        profile.resolution matches the profile resolution in km/pixel
 
     """
     if profile.values.ndim != 3:
@@ -175,8 +175,7 @@ def _check_data_inputs(model_json: dict,
 
     dav_radius = get_dav_radii_from_profile(data["profile"],
                                             model_json["quadrant"],
-                                            model_json["dav_radius_threshold"],
-                                            model_json["profile_resolution"])
+                                            model_json["dav_radius_threshold"])
 
     feature_data = {**data,
                     "dav_radius": dav_radius}
