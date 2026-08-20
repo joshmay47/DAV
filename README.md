@@ -120,7 +120,11 @@ predicted_intensity = intensity_model.predict(cdav_values, starting_basin)
 from dav.utils import get_dav_profile, get_tc_age
 from dav.wind_radii import model as wind_radii_model
 
-profile = get_dav_profile(dav_maps, 75)  # dav_maps from earlier example
+image_resolution = 8
+
+profile = get_dav_profile(dav_maps, # dav_maps from earlier example
+                          resolution=image_resolution,
+                          radius=75)
 tc_age = get_tc_age(tc['usa_wind'], samples_per_hour=1/3) # For three-hourly samples.
 
 # sst can be retrieved from elsewhere, during experiments we used ERA5 data

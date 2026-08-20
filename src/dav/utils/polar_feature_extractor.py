@@ -5,7 +5,14 @@ Created on Mon May 13 13:23:24 2024
 @author: Josh
 """
 from functools import lru_cache
+from dataclasses import dataclass
 import numpy as np
+
+
+@dataclass(frozen=True)
+class DAVProfile:
+    values: np.ndarray
+    resolution: float
 
 
 def bilinear_indexing(data, x_indicies, y_indicies):
@@ -110,6 +117,7 @@ def _to_data(dav_image, order=8):
 
 
 def get_dav_profile(dav_images: np.ndarray,
+                    resolution: float,
                     radius: int = 75) -> np.ndarray:
     """
     Generate a DAV profile from an array of DAV maps.
@@ -119,6 +127,8 @@ def get_dav_profile(dav_images: np.ndarray,
     dav_images : np.ndarray
         Images of a tropical cyclone after running the DAV operation on them.
         Should have three dimensions (time, height, width).
+    resolution : float
+        Resolution of the input dav_images in km/pixel.
     radius : int
         Number of pixels to create the profile away from the center of the
         image. Default is 75 (for a 8km/pixel resolution, this is 600km).
@@ -139,4 +149,4 @@ def get_dav_profile(dav_images: np.ndarray,
                          f"3D, got {dav_images.ndim}D.")
     views = [to_polar(image, radius_range=(0, 75)) for image in dav_images]
     profile = np.array([down_angle(image, 90).T for image in views])
-    return profile
+    return DAVProfile(values=profile, resolution=resolution)

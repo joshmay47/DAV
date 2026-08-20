@@ -128,7 +128,7 @@ def test_wind_radii_estimation(example_tc_data, dav_maps):
     """
     _, tc = example_tc_data
 
-    profile = get_dav_profile(dav_maps, 75)
+    profile = get_dav_profile(dav_maps, resolution=8, radius=75)
 
     # sst can be retrieved from elsewhere, during experiments we used ERA5 data
     data = {"profile": profile,
@@ -139,7 +139,8 @@ def test_wind_radii_estimation(example_tc_data, dav_maps):
     predictions = wind_radii_model.predict(data,
                                            basin="NA",
                                            quadrant="symmetric",
-                                           radius="r34")
+                                           radius="r34",
+                                           set_low_zero=False)
 
     assert len(predictions) == 5
     assert np.all(np.isfinite(predictions[:4]))
