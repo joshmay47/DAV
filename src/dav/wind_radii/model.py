@@ -331,6 +331,8 @@ def predict(data: dict,
 
     prediction = predict_from_json(model_json, data)
 
+    prediction[prediction < 0] = 0
+
     if set_low_zero:
         return np.where(data['wind'] < RADII[radius], 0., prediction)
 
